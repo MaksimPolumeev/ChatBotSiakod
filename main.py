@@ -16,6 +16,7 @@ load_dotenv('key.env')
 EMAIL = os.getenv('EMAIL')
 PASSWD = os.getenv('PASSWD')
 cookie_path_dir = os.getenv('COOKIE')
+bot = telebot.TeleBot(os.getenv('BOT_TOKEN'))
 sign = Login(EMAIL, PASSWD)
 
 
@@ -37,9 +38,7 @@ os.environ['HF_HUB_DISABLE_SYMLINKS_WARNING'] = '1'
 if os.name == 'nt':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-load_dotenv()
 current_mode = "generateTheDatabase"
-bot = telebot.TeleBot(os.getenv('BOT_TOKEN'))
 
 @bot.message_handler(commands=['generateTheDatabase', 'generate'])
 def set_mode(message):
