@@ -21,25 +21,21 @@ def write_to_csv(data, filename='movies.csv'):
             writer.writerow(['movie_info'])
 
         for movie in data:
-            movie_info = f"{movie['title']}, {movie['year']}, {movie['genre']}, {movie['rating']}, {movie['plot']}"
+            movie_info = f"{movie['title']}, {movie['plot']}, {movie['genre']}, {movie['rating']}, {movie['year']}"
             writer.writerow([movie_info])
 
 
 def main():
-
     url = f'http://www.omdbapi.com/?s=Drama&apikey={api_key}&type=movie&page=1'
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
-        total_results = 15
+        total_results = 200
         movies_data = []
-
-
         if total_results > 0:
-
             num_pages = min(total_results // 10 + 1, 20)
             for page in range(1, num_pages + 1):
-                url = f'http://www.omdbapi.com/?s=Drama&apikey={api_key}&type=movie&page={page}'
+                url = f'http://www.omdbapi.com/?s=Comedy&apikey={api_key}&type=movie&page={page}'
                 response = requests.get(url)
                 if response.status_code == 200:
                     data = response.json()
@@ -54,19 +50,17 @@ def main():
                                 genre = movie_data.get('Genre')
                                 rating = movie_data.get('imdbRating')
                                 plot = movie_data.get('Plot')
-
                                 movie_info = {
                                     'title': title,
-                                    'year': year,
+                                    'plot': plot,
                                     'genre': genre,
                                     'rating': rating,
-                                    'plot': plot
+                                    'year': year
                                 }
                                 print(movie_info)
                                 movies_data.append(movie_info)
 
         write_to_csv(movies_data)
-
     else:
         print(f'Ошибка при получении данных о фильмах: {response.status_code}')
 
